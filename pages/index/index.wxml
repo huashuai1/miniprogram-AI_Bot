@@ -9,7 +9,15 @@
 </navigation-bar>
 
 <!-- 可滚动区域 -->
-<scroll-view class="scrollarea" scroll-y type="list">
+<scroll-view 
+  class="scrollarea" 
+  scroll-y 
+  enhanced="{{true}}"
+  show-scrollbar="{{true}}"
+  bounces="{{true}}"
+  scroll-anchoring="{{true}}"
+  type="list"
+>
   <view class="container">
     <!-- 输入区域 -->
     <view class="input-section">
@@ -33,19 +41,25 @@
       >
         <text class="btn-text">{{loading ? '生成中...' : '生成图片'}}</text>
       </button>
+      <view class="clear-history" bindtap="clearHistory" wx:if="{{history.length > 0}}">
+        清空历史记录
+      </view>
     </view>
     
-    <!-- 图片展示区域 -->
-    <view class="image-section" wx:if="{{imageUrl}}">
-      <image 
-        class="generated-image" 
-        src="{{imageUrl}}" 
-        mode="widthFix"
-        bind:tap="previewImage"
-      />
-      <view class="image-actions">
-        <button class="action-btn" bindtap="saveImage">保存到相册</button>
-        <button class="action-btn share" open-type="share">分享</button>
+    <!-- 历史记录区域 -->
+    <view class="history-section">
+      <view class="history-grid">
+        <block wx:for="{{history}}" wx:key="timestamp">
+          <view class="history-card" bindtap="showHistoryDetail" data-item="{{item}}">
+            <image 
+              class="history-image" 
+              src="{{item.imageUrl}}" 
+              mode="aspectFill"
+            />
+            <view class="history-title">{{item.prompt}}</view>
+            <view class="history-time">{{tools.formatTime(item.timestamp)}}</view>
+          </view>
+        </block>
       </view>
     </view>
   </view>
@@ -53,3 +67,36 @@
 
 <!-- 修改底部免责声明 -->
 <view class="disclaimer">AI生成内容仅供参考，不代表本平台观点</view>
+
+<!-- 添加时间格式化工具 -->
+<wxs module="tools">
+  module.exports = {
+    formatTime: function(timestamp) {
+      var date = getDate(timestamp);
+      var month = date.getMonth() + 1;
+      var day = date.getDate();
+      var hour = date.getHours();
+      var minute = date.getMinutes();
+      return month + '月' + day + '日 ' + hour + ':' + (minute < 10 ? '0' + minute : minute);
+    }
+  }
+</wxs>
+
+<!-- 添加历史记录详情弹窗 -->
+<view class="history-modal {{showModal ? 'show' : ''}}" wx:if="{{showModal}}" bindtap="hideHistoryDetail">
+  <view class="modal-content" catchtap="stopPropagation">
+    <view class="modal-prompt">{{currentItem.prompt}}</view>
+    <image 
+      class="modal-image" 
+      src="{{currentItem.imageUrl}}" 
+      mode="widthFix"
+      bind:tap="previewImage"
+      data-url="{{currentItem.imageUrl}}"
+    />
+    <view class="modal-actions">
+      <button class="action-btn" bindtap="saveImage" data-url="{{currentItem.imageUrl}}">保存到相册</button>
+      <button class="action-btn share" open-type="share" data-index="{{currentIndex}}">分享</button>
+    </view>
+    <view class="modal-time">{{tools.formatTime(currentItem.timestamp)}}</view>
+  </view>
+</view>
