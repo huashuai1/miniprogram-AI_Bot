@@ -47,7 +47,7 @@ page {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20rpx;
-  width: 100%;
+  padding: 20rpx;
   box-sizing: border-box;
 }
 
@@ -309,4 +309,82 @@ page {
 
 .clear-history:active {
   opacity: 0.7;
+}
+
+/* 最新生成图片区域样式 */
+.latest-image-section {
+  width: 100%;
+  margin-top: 30rpx;
+  padding: 20rpx;
+  background: #fff9ec;
+  border-radius: 16rpx;
+}
+
+.latest-image {
+  width: 100%;
+  border-radius: 12rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+}
+
+.latest-actions {
+  display: flex;
+  justify-content: center;
+  gap: 40rpx;  /* 增加按钮之间的间距 */
+  margin-top: 20rpx;
+}
+
+/* 修改操作按钮样式 */
+.action-btn {
+  width: 40% !important;  /* 缩短按钮长度 */
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 28rpx;
+  background: #fff9ec;
+  color: #ffb240;
+  border-radius: 40rpx;
+  border: 2rpx solid #ffe4b3;
+  padding: 0;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* 分享按钮特殊样式 */
+.action-btn.share {
+  background: #ffffff;
+  color: #07c160;
+  border: 3rpx solid #07c160;
+  box-shadow: 0 8rpx 16rpx rgba(7, 193, 96, 0.1);
+}
+
+/* 修改历史记录卡片样式 */
+.history-card {
+  background: #ffffff;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 16rpx rgba(255, 178, 64, 0.1);
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 0.8;
+  width: 100%;
+  position: relative;
+}
+
+.history-image {
+  width: 100%;
+  height: 65%;
+  object-fit: cover;
+  background-color: #f5f5f5;
+  filter: brightness(0.95);  /* 稍微降低亮度，区分最新图片 */
+}
+
+/* 修改弹窗中的按钮样式 */
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 40rpx;  /* 增加按钮之间的间距 */
+  margin-top: 20rpx;
+}
+
+.modal-content .action-btn {
+  width: 40% !important;
 }
