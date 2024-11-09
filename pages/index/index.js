@@ -20,6 +20,7 @@ Page({
     console.log('页面加载完成')
     // 加载本地存储的历史记录
     const history = wx.getStorageSync('imageHistory') || [];
+    console.log('加载的历史记录:', history);
     this.setData({ history });
   },
 

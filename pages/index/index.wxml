@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<!-- 自定义导航栏，添加自定义样式类 -->
+<!-- 自定义导航栏 -->
 <navigation-bar 
   title="AI绘画"
   back="{{false}}"
@@ -8,64 +8,62 @@
   class="custom-nav">
 </navigation-bar>
 
-<!-- 可滚动区域 -->
+<!-- 固定的顶部操作区 -->
+<view class="top-section">
+  <view class="input-section">
+    <textarea 
+      class="text-input" 
+      placeholder="请输入图片描述，让AI为您绘制..." 
+      bindinput="handleInput"
+      value="{{inputText}}"
+      maxlength="200"
+      adjust-position="{{true}}"
+      show-confirm-bar="{{false}}"
+      hold-keyboard="{{false}}"
+      auto-focus="{{false}}"
+    />
+    <view class="word-count">{{inputText.length || 0}}/200</view>
+    <button 
+      class="submit-btn {{!canSubmit ? 'disabled' : ''}}"
+      bindtap="handleSubmit"
+      loading="{{loading}}"
+      disabled="{{!canSubmit || loading}}"
+    >
+      <text class="btn-text">{{loading ? '生成中...' : '生成图片'}}</text>
+    </button>
+    <view class="clear-history" bindtap="clearHistory" wx:if="{{history.length > 0}}">
+      清空历史记录
+    </view>
+  </view>
+</view>
+
+<!-- 独立的历史记录滚动区域 -->
 <scroll-view 
-  class="scrollarea" 
+  class="history-scroll"
   scroll-y 
   enhanced="{{true}}"
   show-scrollbar="{{true}}"
   bounces="{{true}}"
   scroll-anchoring="{{true}}"
-  type="list"
 >
-  <view class="container">
-    <!-- 输入区域 -->
-    <view class="input-section">
-      <textarea 
-        class="text-input" 
-        placeholder="请输入图片描述，让AI为您绘制..." 
-        bindinput="handleInput"
-        value="{{inputText}}"
-        maxlength="200"
-        adjust-position="{{true}}"
-        show-confirm-bar="{{false}}"
-        hold-keyboard="{{false}}"
-        auto-focus="{{false}}"
-      />
-      <view class="word-count">{{inputText.length || 0}}/200</view>
-      <button 
-        class="submit-btn {{!canSubmit ? 'disabled' : ''}}"
-        bindtap="handleSubmit"
-        loading="{{loading}}"
-        disabled="{{!canSubmit || loading}}"
-      >
-        <text class="btn-text">{{loading ? '生成中...' : '生成图片'}}</text>
-      </button>
-      <view class="clear-history" bindtap="clearHistory" wx:if="{{history.length > 0}}">
-        清空历史记录
-      </view>
-    </view>
-    
-    <!-- 历史记录区域 -->
-    <view class="history-section">
-      <view class="history-grid">
-        <block wx:for="{{history}}" wx:key="timestamp">
-          <view class="history-card" bindtap="showHistoryDetail" data-item="{{item}}">
-            <image 
-              class="history-image" 
-              src="{{item.imageUrl}}" 
-              mode="aspectFill"
-            />
-            <view class="history-title">{{item.prompt}}</view>
-            <view class="history-time">{{tools.formatTime(item.timestamp)}}</view>
-          </view>
-        </block>
-      </view>
+  <view class="history-section">
+    <view class="history-grid">
+      <block wx:for="{{history}}" wx:key="timestamp">
+        <view class="history-card" bindtap="showHistoryDetail" data-item="{{item}}">
+          <image 
+            class="history-image" 
+            src="{{item.imageUrl}}" 
+            mode="aspectFill"
+          />
+          <view class="history-title">{{item.prompt}}</view>
+          <view class="history-time">{{tools.formatTime(item.timestamp)}}</view>
+        </view>
+      </block>
     </view>
   </view>
 </scroll-view>
 
-<!-- 修改底部免责声明 -->
+<!-- 底部免责声明 -->
 <view class="disclaimer">AI生成内容仅供参考，不代表本平台观点</view>
 
 <!-- 添加时间格式化工具 -->
