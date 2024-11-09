@@ -1,0 +1,6 @@
+# 忽略实际配置文件
+config.js
+instruction.md
+
+# 不忽略示例配置文件
+!config.example.js 
