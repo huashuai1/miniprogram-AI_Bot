@@ -50,11 +50,14 @@
     <view class="history-grid">
       <block wx:for="{{history}}" wx:key="timestamp">
         <view class="history-card" bindtap="showHistoryDetail" data-item="{{item}}">
-          <image 
-            class="history-image" 
-            src="{{item.imageUrl}}" 
-            mode="aspectFill"
-          />
+          <view class="history-image">
+            <image 
+              src="{{item.imageUrl}}" 
+              mode="aspectFill"
+              binderror="handleImageError"
+              data-index="{{index}}"
+            />
+          </view>
           <view class="history-title">{{item.prompt}}</view>
           <view class="history-time">{{tools.formatTime(item.timestamp)}}</view>
         </view>

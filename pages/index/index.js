@@ -289,6 +289,13 @@ Page({
   // 显示历史记录详情
   showHistoryDetail(e) {
     const item = e.currentTarget.dataset.item;
+    if (item.imageLoadError) {
+      wx.showToast({
+        title: '图片加载失败',
+        icon: 'none'
+      });
+      return;
+    }
     const index = this.data.history.findIndex(h => h.timestamp === item.timestamp);
     this.setData({
       showModal: true,
@@ -309,5 +316,18 @@ Page({
   // 阻止冒泡
   stopPropagation(e) {
     e.stopPropagation();
+  },
+
+  // 添加图片加载错误处理
+  handleImageError(e) {
+    console.error('图片加载失败:', e);
+    const index = e.currentTarget.dataset.index;
+    const history = this.data.history;
+    
+    // 更新历史记录中的图片状态
+    if (history[index]) {
+      history[index].imageLoadError = true;
+      this.setData({ history });
+    }
   }
 })
