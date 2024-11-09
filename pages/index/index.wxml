@@ -34,6 +34,9 @@
     <view class="clear-history" bindtap="clearHistory" wx:if="{{history.length > 0}}">
       清空历史记录
     </view>
+    <view class="history-limit-tip" wx:if="{{history.length > 0}}">
+      最多保存9张历史记录
+    </view>
   </view>
 </view>
 
